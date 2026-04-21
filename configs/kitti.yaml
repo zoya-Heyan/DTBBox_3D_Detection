@@ -1,0 +1,30 @@
+dataset:
+  root: data/kitti
+  train_split: data/kitti/ImageSets/train.txt
+  val_split: data/kitti/ImageSets/val.txt
+  input_size: [512, 512]
+  allowed_classes: ["Car", "Van", "Truck"]
+
+train:
+  batch_size: 2
+  epochs: 100
+  lr: 0.004
+  momentum: 0.9
+  weight_decay: 0.0001
+  num_workers: 4
+  save_dir: checkpoints
+
+model:
+  backbone: resnet18
+  roi_size: 7
+  fc_dim: 4096
+
+loss:
+  dim_weight: 1.0
+  yaw_weight: 1.0
+  abs_weight: 2.0
+  rel_weight: 1.0
+
+rpfo:
+  lam: 3.0
+  min_depth: 1.0
