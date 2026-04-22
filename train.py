@@ -7,16 +7,27 @@ from models.dtbbox_net import DTBoxNet
 from utils.misc import load_config, save_checkpoint
 from utils.losses import compute_loss
 
+def collate_fn(batch):
+    return batch
+
 def main():
     parser = argparse.ArgumentParser(description="Train DT-BBox 3D Detection")
     parser.add_argument("--config", type=str, default="configs/kitti.yaml", help="Config file path")
     parser.add_argument("--stage", type=str, default="baseline", choices=["baseline", "dtbbox", "relative", "full"], help="Training stage")
     parser.add_argument("--resume", type=str, default=None, help="Resume from checkpoint")
+    parser.add_argument("--epochs", type=int, default=None, help="Number of epochs")
+    parser.add_argument("--batch_size", type=int, default=None, help="Batch size")
     args = parser.parse_args()
 
     # 加载配置
     config = load_config(args.config)
     config.stage = args.stage
+
+    # 覆盖配置
+    if args.epochs is not None:
+        config.train.epochs = args.epochs
+    if args.batch_size is not None:
+        config.train.batch_size = args.batch_size
 
     # 数据集
     train_dataset = KittiDataset(
@@ -31,7 +42,7 @@ def main():
         batch_size=config.train.batch_size,
         shuffle=True,
         num_workers=config.train.num_workers,
-        collate_fn=lambda batch: batch
+        collate_fn=collate_fn
     )
 
     # 模型

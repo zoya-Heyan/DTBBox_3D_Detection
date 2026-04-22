@@ -15,7 +15,7 @@ class DTBoxNet(nn.Module):
         self.backbone_name = config.model.backbone
         self.roi_size = config.model.roi_size
         self.fc_dim = config.model.fc_dim
-        self.stage = config.get("stage", "baseline")
+        self.stage = getattr(config, "stage", "baseline")
 
         # 骨干网络
         self.backbone = Backbone(self.backbone_name)
