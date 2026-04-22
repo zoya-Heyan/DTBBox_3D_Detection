@@ -150,15 +150,6 @@ python3 demo.py --stage full --checkpoint checkpoints/checkpoint_epoch_100.pth -
 - **relative**: Dual target RoI + Relative head
 - **full**: Dual target RoI + Relative head + R-PFO (test time)
 
-## Current Status
-
-- ✅ Code structure complete
-- ✅ Dataset loader implemented
-- ✅ Model architecture implemented
-- ✅ Training and evaluation scripts ready
-- ✅ Command-line arguments support
-- ℹ️ Requires KITTI dataset for actual training
-
 ## Notes
 
 - The R-PFO module is only used during inference (not training)
