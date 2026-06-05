@@ -1,5 +1,6 @@
 import yaml
 import os
+import torch
 
 class Config:
     """
@@ -64,6 +65,12 @@ def load_checkpoint(model, optimizer, checkpoint_path):
         epoch: 加载的 epoch
     """
     checkpoint = torch.load(checkpoint_path)
-    model.load_state_dict(checkpoint["model_state_dict"])
-    optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+    
+    # 使用 strict=False 允许加载不同阶段的检查点（忽略不存在的键）
+    model_state_dict = checkpoint["model_state_dict"]
+    model.load_state_dict(model_state_dict, strict=False)
+    
+    if optimizer is not None and "optimizer_state_dict" in checkpoint:
+        optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+    
     return checkpoint["epoch"]

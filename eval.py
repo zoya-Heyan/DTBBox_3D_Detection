@@ -6,6 +6,9 @@ from models.dtbbox_net import DTBoxNet
 from utils.misc import load_config, load_checkpoint
 from utils.metrics import evaluate
 
+def collate_fn(batch):
+    return batch
+
 def main():
     parser = argparse.ArgumentParser(description="Evaluate DT-BBox 3D Detection")
     parser.add_argument("--config", type=str, default="configs/kitti.yaml", help="Config file path")
@@ -30,7 +33,7 @@ def main():
         batch_size=config.train.batch_size,
         shuffle=False,
         num_workers=config.train.num_workers,
-        collate_fn=lambda batch: batch
+        collate_fn=collate_fn
     )
 
     # 模型
